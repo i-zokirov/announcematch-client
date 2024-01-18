@@ -16,3 +16,17 @@ export type Announcement = {
   acceptedProposal: Porposal | null;
   categories: Category[];
 };
+
+export type AnnouncementsFilter = {
+  page: number;
+  limit: number;
+  search: string;
+  category_id: string | null;
+};
+
+export type GetPublishedAnnouncementsResponse = {
+  totalCount: number;
+  data: Announcement[];
+  limit: number;
+  page: number;
+};

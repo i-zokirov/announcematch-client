@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet, RouteObject } from 'react-router';
 import AdminLayout from '../layouts/admin';
+import PublishedAnnouncements from '../pages/admin/announcements/list';
 import UsersPage from '../pages/admin/users/list';
 
 export const adminRoutes: RouteObject[] = [
@@ -21,6 +22,10 @@ export const adminRoutes: RouteObject[] = [
       {
         path: 'users',
         element: <UsersPage />
+      },
+      {
+        path: 'announcements/published',
+        element: <PublishedAnnouncements />
       }
     ]
   }

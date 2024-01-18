@@ -18,7 +18,7 @@ const adminNavs = [
   },
   {
     name: 'Announcements',
-    path: '/admin/announcements'
+    path: '/admin/announcements/published'
   }
 ];
 

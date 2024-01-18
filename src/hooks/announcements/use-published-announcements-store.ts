@@ -1,23 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
 import { ChangeEvent, MouseEvent, useCallback, useMemo, useState } from 'react';
-import { usersApi } from '../../api/users';
+import { announcementsApi } from '../../api/announcements';
+import { AnnouncementsFilter } from '../../types/announcement';
 import { UserFilters } from '../../types/user';
 import { useAuth } from '../use-auth';
 
-export const useUsersStore = () => {
-  const [filters, setFilters] = useState<UserFilters>({
+export const usePublishedAnnouncementsStore = () => {
+  const [filters, setFilters] = useState<AnnouncementsFilter>({
     page: 0,
     limit: 20,
-    search: ''
+    search: '',
+    category_id: ''
   });
   const auth = useAuth();
-  const queryKey = useMemo(() => ['users', filters], [filters]);
+  const queryKey = useMemo(() => ['announcements/published', filters], [filters]);
 
   const { data, isLoading, isError, error, isFetching } = useQuery({
     queryKey,
     queryFn: () => {
       if (auth.accessToken) {
-        return usersApi.getUsers(auth.accessToken, filters);
+        return announcementsApi.getPublishedAnnouncements(auth.accessToken, filters);
       } else {
         return Promise.reject('No access token');
       }
@@ -43,6 +45,10 @@ export const useUsersStore = () => {
     setFilters((prev) => ({ ...prev, page: newPage }));
   }, []);
 
+  const handleCategoryChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setFilters((prev) => ({ ...prev, category_id: event.target.value as string }));
+  }, []);
+
   return {
     data,
     isLoading,
@@ -52,6 +58,7 @@ export const useUsersStore = () => {
     isFetching,
     handleFiltersChange,
     handleRowsPerPageChange,
-    handlePageChange
+    handlePageChange,
+    handleCategoryChange
   };
 };

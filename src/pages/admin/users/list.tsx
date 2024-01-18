@@ -1,6 +1,21 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
-import { Alert, Card, Grid, IconButton, InputAdornment, OutlinedInput, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
+import {
+  Alert,
+  Card,
+  Grid,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  SvgIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tooltip
+} from '@mui/material';
 import dayjs from 'dayjs';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { SeverityPill } from '../../../components/severitypill';
@@ -11,7 +26,7 @@ import { renderLoadingTableRows } from '../../../utils/renderloading-table-rows'
 const UsersPage = () => {
   const [searchInput, setSearchInput] = useState('');
 
-  const { data, isLoading, isError, error, handleFiltersChange } = useUsersStore();
+  const { data, isLoading, isError, error, handleFiltersChange, handleRowsPerPageChange, handlePageChange, filters } = useUsersStore();
 
   const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -111,6 +126,15 @@ const UsersPage = () => {
           )}
         </TableBody>
       </Table>
+      <TablePagination
+        component="div"
+        count={data?.totalCount ?? 0}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        page={filters.page}
+        rowsPerPage={filters.limit}
+        rowsPerPageOptions={[10, 20, 50, 100]}
+      />
     </Card>
   );
 };
