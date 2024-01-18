@@ -1,4 +1,5 @@
 import { Category } from './category';
+import { AnnouncementStatus } from './enums';
 import { Porposal } from './proposal';
 import { User } from './user';
 
@@ -6,7 +7,7 @@ export type Announcement = {
   id: string;
   title: string;
   description: string;
-  status: string;
+  status: AnnouncementStatus;
   image: string | null;
   expiresAt: string | null;
   archivedAt: string | null;

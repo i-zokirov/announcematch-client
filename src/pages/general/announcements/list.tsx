@@ -22,13 +22,15 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { usePublishedAnnouncementsStore } from '../../../hooks/announcements/use-published-announcements-store';
 import { useCategories } from '../../../hooks/categories/use-categories';
+import { useAuth } from '../../../hooks/use-auth';
 import { renderLoadingTableRows } from '../../../utils/renderloading-table-rows';
 
 const PublishedAnnouncements = () => {
   const [searchInput, setSearchInput] = useState('');
-
+  const auth = useAuth();
   const { data, isLoading, isError, error, handleFiltersChange, handleRowsPerPageChange, handlePageChange, filters, handleCategoryChange } =
     usePublishedAnnouncementsStore();
   const { categories } = useCategories();
@@ -140,7 +142,10 @@ const PublishedAnnouncements = () => {
                   <TableCell>{announcement.categories.map((category) => `#${category.name}`).join(', ')}</TableCell>
                   <TableCell align="right">
                     <Tooltip title="See details">
-                      <IconButton>
+                      <IconButton
+                        component={Link}
+                        to={auth.user ? `/${auth.user.role}/announcements/${announcement.id}` : '/login'}
+                      >
                         <TrendingFlatIcon />
                       </IconButton>
                     </Tooltip>

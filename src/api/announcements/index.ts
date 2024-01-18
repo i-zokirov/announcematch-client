@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import toast from 'react-hot-toast';
-import { AnnouncementsFilter, GetPublishedAnnouncementsResponse } from '../../types/announcement';
+import { Announcement, AnnouncementsFilter, GetPublishedAnnouncementsResponse } from '../../types/announcement';
 import { apiUrl } from '../apiUrl';
 
 export class AnnouncementsApi {
@@ -29,6 +29,22 @@ export class AnnouncementsApi {
       });
 
       return result.data as GetPublishedAnnouncementsResponse;
+    } catch (error: any) {
+      const errormessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : error.message;
+      toast.error(errormessage);
+      throw new Error(errormessage);
+    }
+  }
+
+  async getAnnouncementById(access_token: string, id: string) {
+    try {
+      const result = await this.api.get(`/announcements/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+
+      return result.data as Announcement;
     } catch (error: any) {
       const errormessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : error.message;
       toast.error(errormessage);
