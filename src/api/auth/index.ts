@@ -2,8 +2,8 @@ import { UserRoles } from '../../types/enums';
 import { User } from '../../types/user';
 import { apiUrl } from '../apiUrl';
 
-type SignInRequest = {
-  login: string;
+export type SignInRequest = {
+  email: string;
   password: string;
 };
 
@@ -25,14 +25,15 @@ export type SignUpRequest = {
 
 class AuthApi {
   async signIn(request: SignInRequest) {
-    const { login, password } = request;
+    const { email, password } = request;
 
-    const result = await apiUrl.post('/auth/login', { login, password });
+    const result = await apiUrl.post('/auth/login', { email, password });
     return result.data as AuthSuccessResponse;
   }
 
   async signUp(request: SignUpRequest) {
-    const result = await apiUrl.post('/auth/signup', request);
+    const { role, ...rest } = request;
+    const result = await apiUrl.post(`/auth/signup/${role}`, rest);
     return result.data as AuthSuccessResponse;
   }
 

@@ -139,8 +139,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   }, []);
 
   const signIn = useCallback(
-    async (login: string, password: string): Promise<void> => {
-      const result = await authApi.signIn({ login, password });
+    async (email: string, password: string): Promise<void> => {
+      const result = await authApi.signIn({ email, password });
       if (result) {
         const { access_token } = result;
         const user = await authApi.me({ access_token });

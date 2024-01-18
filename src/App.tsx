@@ -3,6 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useRoutes } from 'react-router';
 import 'src/global.css';
+import { Toaster } from './components/toaster';
 import { AuthConsumer, AuthProvider } from './contexts/auth';
 import { routes } from './routes';
 import { createTheme } from './theme';
@@ -19,15 +20,20 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {element}
-
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <AuthProvider>
           <AuthConsumer>
             {(auth) => {
               const showSlashScreen = !auth.isInitialized;
 
-              return showSlashScreen ? <div>Loading...</div> : element;
+              return showSlashScreen ? (
+                <div>Loading...</div>
+              ) : (
+                <>
+                  {' '}
+                  {element} <Toaster />
+                </>
+              );
             }}
           </AuthConsumer>
         </AuthProvider>

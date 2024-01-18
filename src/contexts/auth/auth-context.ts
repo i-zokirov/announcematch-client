@@ -16,7 +16,7 @@ export const initialState: State = {
 };
 
 export interface AuthContextType extends State {
-  signIn: (login: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
   signUp: (request: any) => Promise<void>;
   signOut: () => Promise<void>;
 }
