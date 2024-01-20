@@ -42,6 +42,12 @@ export default function SignUp() {
   const auth = useAuth();
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    if (auth.user && auth.isAuthenticated) {
+      navigate(`/${auth.user.role}`);
+    }
+  }, [auth]);
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -50,12 +56,8 @@ export default function SignUp() {
         setError(null);
         setLoading(true);
         await auth.signUp(values);
-        setLoading(false);
 
         toast.success('Sign up successful');
-        if (auth.user) {
-          navigate(`/${auth.user.role}`);
-        }
       } catch (error: any) {
         setLoading(false);
         const errormessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : error.message;

@@ -1,10 +1,12 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MailIcon from '@mui/icons-material/Mail';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { AppBar, Badge, Box, IconButton, Link, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import { AppBar, Badge, Box, IconButton, Link, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material';
 import React, { useCallback } from 'react';
 import { Link as Routerlink } from 'react-router-dom';
+import { useAuth } from '../hooks/use-auth';
 import { UserRoles } from '../types/enums';
 
 interface NavbarProps {
@@ -26,11 +28,16 @@ const Navbar: React.FC<NavbarProps> = ({ role }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const auth = useAuth();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogout = () => {
+    auth.signOut();
   };
 
   const handleMobileMenuClose = () => {
@@ -198,17 +205,17 @@ const Navbar: React.FC<NavbarProps> = ({ role }) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+
+            <Tooltip title="Logout">
+              <IconButton
+                onClick={handleLogout}
+                color="inherit"
+                size="large"
+                sx={{ ml: 2 }}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
